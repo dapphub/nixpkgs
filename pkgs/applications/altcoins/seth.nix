@@ -1,22 +1,22 @@
 { stdenv, makeWrapper, lib, fetchFromGitHub
-, bc, coreutils, curl, ethabi, git, gnused, jshon, solc, which }:
+, bc, coreutils, curl, ethabi, git, gnused, jshon, which }:
 
 stdenv.mkDerivation rec {
   name = "seth-${version}";
-  version = "0.5.2";
+  version = "0.5.3";
 
   src = fetchFromGitHub {
     owner = "dapphub";
     repo = "seth";
     rev = "v${version}";
-    sha256 = "0js2vjcbdlgi6j7y5sjcmrggcrdv5x8cvkzv6hxn6l3mab5w3bhi";
+    sha256 = "0h4z0j760xy9x1akwyhwhb6wwvsqqdpb524qqnjwnrjqawgpls78";
   };
 
   nativeBuildInputs = [makeWrapper];
   buildPhase = "true";
   makeFlags = ["prefix=$(out)"];
   postInstall = let path = lib.makeBinPath [
-    bc coreutils curl ethabi git gnused jshon solc which
+    bc coreutils curl ethabi git gnused jshon which
   ]; in ''
     wrapProgram "$out/bin/seth" --prefix PATH : "${path}"
   '';
