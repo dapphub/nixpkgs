@@ -461,4 +461,6 @@ self: super: builtins.intersectAttrs super {
   liquid-fixpoint = disableSharedExecutables super.liquid-fixpoint;
   liquidhaskell = dontCheck (disableSharedExecutables super.liquidhaskell);
 
+  # Tests run non-portable shell script; fixed upstream but not released as of 0.7.1.
+  process-extras = dontCheck super.process-extras;
 }
