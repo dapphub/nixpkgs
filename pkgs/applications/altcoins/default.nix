@@ -38,6 +38,10 @@ rec {
   ethrun = callPackage ./ethrun.nix { };
   seth = callPackage ./seth.nix { };
 
+  hsevm = (pkgs.haskellPackages.callPackage ./hsevm.nix {}).overrideAttrs (old: rec {
+    buildInputs = [pkgs.solc];
+  });
+
   primecoin  = callPackage ./primecoin.nix { withGui = true; };
   primecoind = callPackage ./primecoin.nix { withGui = false; };
 
