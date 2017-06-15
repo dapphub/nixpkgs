@@ -6,6 +6,7 @@
 , stdenv, tasty, tasty-hunit, tasty-quickcheck, temporary, text
 , text-format, unordered-containers, vector, vty
 , fetchFromGitHub
+, ncurses, zlib, bzip2
 }:
 mkDerivation rec {
   pname = "hsevm";
@@ -16,9 +17,13 @@ mkDerivation rec {
     rev = "v${version}";
     sha256 = "1na60lzgfx16y9icqixf4vvph2wppj97qlqll7pph207cww2y4rq";
   };
-  isLibrary = true;
+  isLibrary = false;
   isExecutable = true;
-  libraryHaskellDepends = [
+  enableSharedExecutables = false;
+  postInstall = ''
+    rm -rf $out/{lib,share}
+  '';
+  extraLibraries = [
     aeson ansi-wl-pprint base base16-bytestring base64-bytestring
     binary brick bytestring containers cryptonite data-dword deepseq
     directory filepath ghci-pretty lens lens-aeson memory mtl
@@ -27,11 +32,7 @@ mkDerivation rec {
     vty
   ];
   executableHaskellDepends = [
-    aeson ansi-wl-pprint base base16-bytestring base64-bytestring
-    binary brick bytestring containers cryptonite data-dword deepseq
-    directory filepath ghci-pretty lens lens-aeson memory mtl
-    optparse-generic process QuickCheck quickcheck-text readline
-    temporary text text-format unordered-containers vector vty
+    readline zlib bzip2
   ];
   testHaskellDepends = [
     base binary bytestring ghci-pretty here HUnit lens mtl QuickCheck
