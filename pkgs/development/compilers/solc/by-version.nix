@@ -25,7 +25,15 @@ stdenv.mkDerivation {
       --replace '${jsoncppURL}' ${jsoncpp}
     substituteInPlace cmake/EthCompilerSettings.cmake \
       --replace 'add_compile_options(-Werror)' ""
+  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+    substituteInPlace cmake/EthDependencies.cmake \
+      --replace 'Boost_USE_STATIC_LIBS ON' 'Boost_USE_STATIC_LIBS OFF'
   '';
+
+  # The Darwin flag for patch phase is a hack to avoid some
+  # recompilation.  Actually the cmakeFlags way works fine, except not
+  # in older versions.  I want to build those older version on Mac,
+  # but not rebuild my Linux versions, so I do it this silly way.
 
   cmakeFlags = [
     "-DBoost_USE_STATIC_LIBS=OFF"
