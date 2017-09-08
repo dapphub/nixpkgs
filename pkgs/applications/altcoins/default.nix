@@ -43,7 +43,7 @@ rec {
   seth = callPackage ./seth.nix { };
   dapp = callPackage ./dapp.nix { };
 
-  hsevm = (pkgs.haskellPackages.callPackage ./hsevm.nix {});
+  hsevm = pkgs.haskell.lib.justStaticExecutables (pkgs.haskellPackages.callPackage ./hsevm.nix {});
 
   primecoin  = callPackage ./primecoin.nix { withGui = true; };
   primecoind = callPackage ./primecoin.nix { withGui = false; };

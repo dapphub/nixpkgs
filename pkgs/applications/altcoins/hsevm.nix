@@ -22,12 +22,7 @@ lib.overrideDerivation (mkDerivation rec {
     sha256 = "0grsp2dziv6pvwx8y5i2m3079lwc67kccppm0szg5y69g3i2pzy7";
   };
 
-  isLibrary = false;
-  isExecutable = true;
-  enableSharedExecutables = false;
-
   postInstall = ''
-    rm -rf $out/{lib,share}
     wrapProgram $out/bin/hsevm --add-flags '+RTS -N$((`${coreutils}/bin/nproc` - 1)) -RTS'
   '';
 
