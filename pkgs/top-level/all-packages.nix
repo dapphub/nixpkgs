@@ -6054,7 +6054,10 @@ with pkgs;
             then callPackage ../development/compilers/smlnj { }
             else callPackage_i686 ../development/compilers/smlnj { };
 
-  solc = callPackage ../development/compilers/solc { };
+  solc = solc-versions.solc_0_4_16;
+  solc-versions =
+    lib.mapAttrs (name: value: callPackage value {})
+      (import ../development/compilers/solc/versions.nix);
 
   souffle = callPackage ../development/compilers/souffle { };
 
