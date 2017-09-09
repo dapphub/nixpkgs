@@ -47,6 +47,7 @@ rec {
 
   keeper = callPackage ./keeper.nix { };
   setzer = callPackage ./setzer.nix { };
+  medianizer = callPackage ./medianizer.nix { };
 
   primecoin  = callPackage ./primecoin.nix { withGui = true; };
   primecoind = callPackage ./primecoin.nix { withGui = false; };

@@ -13456,6 +13456,7 @@ with pkgs;
 
   keeper = self.altcoins.keeper;
   setzer = self.altcoins.setzer;
+  medianizer = self.altcoins.medianizer;
 
   stellar-core = self.altcoins.stellar-core;
 
