@@ -13454,6 +13454,8 @@ with pkgs;
   dapp = self.altcoins.dapp;
   hsevm = self.altcoins.hsevm;
 
+  keeper = self.altcoins.keeper;
+
   stellar-core = self.altcoins.stellar-core;
 
   aumix = callPackage ../applications/audio/aumix {
