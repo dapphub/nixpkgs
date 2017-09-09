@@ -13455,6 +13455,7 @@ with pkgs;
   hsevm = self.altcoins.hsevm;
 
   keeper = self.altcoins.keeper;
+  setzer = self.altcoins.setzer;
 
   stellar-core = self.altcoins.stellar-core;
 

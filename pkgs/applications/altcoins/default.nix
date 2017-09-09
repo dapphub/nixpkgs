@@ -46,6 +46,7 @@ rec {
   hsevm = pkgs.haskell.lib.justStaticExecutables (pkgs.haskellPackages.callPackage ./hsevm.nix {});
 
   keeper = callPackage ./keeper.nix { };
+  setzer = callPackage ./setzer.nix { };
 
   primecoin  = callPackage ./primecoin.nix { withGui = true; };
   primecoind = callPackage ./primecoin.nix { withGui = false; };
