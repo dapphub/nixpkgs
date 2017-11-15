@@ -15,13 +15,14 @@ let buildCrate = { crateName, crateVersion, buildDependencies, dependencies,
       let depsDir = lib.concatStringsSep " " dependencies;
           completeDepsDir = lib.concatStringsSep " " completeDeps;
           completeBuildDepsDir = lib.concatStringsSep " " completeBuildDeps;
+          dynlibExt = if stdenv.isDarwin then "dylib" else "so";
           makeDeps = dependencies:
             (lib.concatMapStringsSep " " (dep:
               let extern = lib.strings.replaceStrings ["-"] ["_"] dep.libName; in
               (if dep.crateType == "lib" then
                  " --extern ${extern}=${dep.out}/lib${extern}-${dep.metadata}.rlib"
               else
-                 " --extern ${extern}=${dep.out}/lib${extern}-${dep.metadata}.so")
+                 " --extern ${extern}=${dep.out}/lib${extern}-${dep.metadata}.${dynlibExt}")
             ) dependencies);
           deps = makeDeps dependencies;
           buildDeps = makeDeps buildDependencies;
@@ -46,7 +47,7 @@ let buildCrate = { crateName, crateVersion, buildDependencies, dependencies,
       chmod uga+w target -R
       for i in ${completeDepsDir}; do
          ln -s -f $i/*.rlib target/deps #*/
-         ln -s -f $i/*.so target/deps #*/
+         ln -s -f $i/*.${dynlibExt} target/deps #*/
          if [ -e "$i/link" ]; then
             cat $i/link >> target/link
             cat $i/link >> target/link.final
@@ -57,7 +58,7 @@ let buildCrate = { crateName, crateVersion, buildDependencies, dependencies,
       done
       for i in ${completeBuildDepsDir}; do
          ln -s -f $i/*.rlib target/buildDeps #*/
-         ln -s -f $i/*.so target/buildDeps #*/
+         ln -s -f $i/*.${dynlibExt} target/buildDeps #*/
          if [ -e "$i/link" ]; then
             cat $i/link >> target/link.build
          fi
@@ -154,8 +155,8 @@ let buildCrate = { crateName, crateVersion, buildDependencies, dependencies,
            $BUILD_OUT_DIR $EXTRA_BUILD $EXTRA_FEATURES --color ${colors}
 
          EXTRA_LIB=" --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.rlib"
-         if [ -e target/deps/lib$CRATE_NAME-${metadata}.so ]; then
-            EXTRA_LIB="$EXTRA_LIB --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.so"
+         if [ -e target/deps/lib$CRATE_NAME-${metadata}.${dynlibExt} ]; then
+            EXTRA_LIB="$EXTRA_LIB --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.${dynlibExt}"
          fi
       elif [ -e src/lib.rs ] ; then
 
@@ -170,8 +171,8 @@ let buildCrate = { crateName, crateVersion, buildDependencies, dependencies,
            $BUILD_OUT_DIR $EXTRA_BUILD $EXTRA_FEATURES --color ${colors}
 
          EXTRA_LIB=" --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.rlib"
-         if [ -e target/deps/lib$CRATE_NAME-${metadata}.so ]; then
-            EXTRA_LIB="$EXTRA_LIB --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.so"
+         if [ -e target/deps/lib$CRATE_NAME-${metadata}.${dynlibExt} ]; then
+            EXTRA_LIB="$EXTRA_LIB --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.${dynlibExt}"
          fi
 
       elif [ -e src/${libName}.rs ] ; then
@@ -186,8 +187,8 @@ let buildCrate = { crateName, crateVersion, buildDependencies, dependencies,
            $BUILD_OUT_DIR $EXTRA_BUILD $EXTRA_FEATURES --color ${colors}
 
          EXTRA_LIB=" --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.rlib"
-         if [ -e target/deps/lib$CRATE_NAME-${metadata}.so ]; then
-            EXTRA_LIB="$EXTRA_LIB --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.so"
+         if [ -e target/deps/lib$CRATE_NAME-${metadata}.${dynlibExt} ]; then
+            EXTRA_LIB="$EXTRA_LIB --extern $CRATE_NAME=target/deps/lib$CRATE_NAME-${metadata}.${dynlibExt}"
          fi
 
       fi
