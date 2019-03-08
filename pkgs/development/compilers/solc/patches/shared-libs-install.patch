@@ -69,3 +69,10 @@ index 0bdec4b4..e876177e 100644
  add_library(langutil ${sources})
  target_link_libraries(langutil PUBLIC devcore)
 +install(TARGETS langutil LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+--- a/test/tools/yulInterpreter/CMakeLists.txt
++++ b/test/tools/yulInterpreter/CMakeLists.txt
+@@ -7,3 +7,4 @@ set(sources
+
+ add_library(yulInterpreter ${sources})
+ target_link_libraries(yulInterpreter PUBLIC yul solidity devcore)
++install(TARGETS yulInterpreter LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
