@@ -43,7 +43,7 @@ stdenv.mkDerivation {
   ];
 
   doCheck = stdenv.hostPlatform.isLinux && stdenv.hostPlatform == stdenv.buildPlatform;
-  checkPhase = "LD_LIBRARY_PATH=./libsolc:./libsolidity:./libevmasm:./libdevcore:./libyul:./liblangutil:$LD_LIBRARY_PATH " +
+  checkPhase = "LD_LIBRARY_PATH=./libsolc:./libsolidity:./libevmasm:./libdevcore:./libyul:./test/tools/yulInterpreter:./liblangutil:$LD_LIBRARY_PATH " +
                "./test/soltest -p -- --no-ipc --no-smt --testpath ../test";
 
   nativeBuildInputs = [ cmake ];
