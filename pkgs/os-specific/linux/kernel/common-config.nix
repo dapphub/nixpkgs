@@ -699,17 +699,22 @@ let
       PREEMPT_VOLUNTARY = yes;
 
     } // optionalAttrs (stdenv.hostPlatform.system == "x86_64-linux" || stdenv.hostPlatform.system == "aarch64-linux") {
-      # Enable memory hotplug support
-      # Allows you to dynamically add & remove memory to a VM client running NixOS without requiring a reboot
+      # Enable CPU/memory hotplug support
+      # Allows you to dynamically add & remove CPUs/memory to a VM client running NixOS without requiring a reboot
+      ACPI_HOTPLUG_CPU = yes;
       ACPI_HOTPLUG_MEMORY = yes;
       MEMORY_HOTPLUG = yes;
       MEMORY_HOTREMOVE = yes;
+      HOTPLUG_CPU = yes;
       MIGRATION = yes;
       SPARSEMEM = yes;
 
       # Bump the maximum number of CPUs to support systems like EC2 x1.*
       # instances and Xeon Phi.
       NR_CPUS = freeform "384";
+    } // optionalAttrs (stdenv.hostPlatform.system == "aarch64-linux") {
+      # Enables support for the Allwinner Display Engine 2.0
+      SUN8I_DE2_CCU = whenAtLeast "4.13" yes;
     };
   };
 in

@@ -1,4 +1,5 @@
 # nix name, luarocks name, server, version,luaversion,maintainers
+alt-getopt,,,,,arobyn
 ansicolors,,,,,
 argparse,,,,,
 basexx,,,,,
@@ -40,7 +41,7 @@ luadbi-mysql,,,,,
 luadbi-postgresql,,,,,
 luadbi-sqlite3,,,,,
 luaevent,,,,,
-luaexpat,,,,,flosse
+luaexpat,,,1.3.0-1,,arobyn flosse
 luaffi,,http://luarocks.org/dev,,,
 luafilesystem,,,1.7.0-2,,flosse vcunat
 luaossl,,,,lua5_1,vcunat
@@ -56,6 +57,7 @@ luv,,,,,
 markdown,,,,,
 mediator_lua,,,,,
 mpack,,,,,
+moonscript,,,,,arobyn
 nvim-client,,,,,
 penlight,,,,,
 rapidjson,,,,,

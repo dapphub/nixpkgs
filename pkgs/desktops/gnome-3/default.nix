@@ -345,15 +345,11 @@ lib.makeScope pkgs.newScope (self: with self; {
 
   nautilus-python = callPackage ./misc/nautilus-python { };
 
-  pidgin-im-gnome-shell-extension = callPackage ./misc/pidgin { };
-
   gtkhtml = callPackage ./misc/gtkhtml { enchant = pkgs.enchant1; };
 
   pomodoro = callPackage ./misc/pomodoro { };
 
   gnome-autoar = callPackage ./misc/gnome-autoar { };
-
-  gnome-video-effects = callPackage ./misc/gnome-video-effects { };
 
   gnome-packagekit = callPackage ./misc/gnome-packagekit { };
 } // lib.optionalAttrs (config.allowAliases or true) {
@@ -394,8 +390,12 @@ lib.makeScope pkgs.newScope (self: with self; {
       easytag meld orca rhythmbox shotwell gnome-usage
       clutter clutter-gst clutter-gtk cogl gtk-vnc libdazzle libgda libgit2-glib libgxps libgdata libgepub libcroco libpeas libgee geocode-glib libgweather librest libzapojit libmediaart gfbgraph gexiv2 folks totem-pl-parser gcr gsound libgnomekbd vte vte_290 vte-ng gnome-menus gdl;
   inherit (pkgs) gsettings-desktop-schemas; # added 2019-04-16
+  inherit (pkgs) gnome-video-effects; # added 2019-08-19
+
   defaultIconTheme = adwaita-icon-theme;
   gtk = gtk3;
   gtkmm = gtkmm3;
   rest = librest;
+
+  pidgin-im-gnome-shell-extension = pkgs.gnomeExtensions.pidgin-im-integration; # added 2019-08-01
 })
