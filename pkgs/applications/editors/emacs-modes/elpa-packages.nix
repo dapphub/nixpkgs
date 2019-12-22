@@ -36,16 +36,13 @@ self: let
     super = removeAttrs imported [ "dash" ];
 
     overrides = {
-      # upstream issue: missing footer
-      ebdb-i18n-chn = markBroken super.ebdb-i18n-chn;
-      el-search = markBroken super.el-search; # requires emacs-25
-      iterators = markBroken super.iterators; # requires emacs-25
-      midi-kbd = markBroken super.midi-kbd; # requires emacs-25
       rcirc-menu = markBroken super.rcirc-menu; # Missing file header
-      stream = markBroken super.stream; # requires emacs-25
       cl-lib = null; # builtin
       tle = null; # builtin
       advice = null; # builtin
+      seq = if lib.versionAtLeast self.emacs.version "27"
+            then null
+            else super.seq;
     };
 
     elpaPackages = super // overrides;

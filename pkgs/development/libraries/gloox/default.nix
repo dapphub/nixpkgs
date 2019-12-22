@@ -13,8 +13,9 @@ with stdenv.lib;
 let
   version = "1.0.22";
 in
-stdenv.mkDerivation rec {
-  name = "gloox-${version}";
+stdenv.mkDerivation {
+  pname = "gloox";
+  inherit version;
 
   src = fetchurl {
     url = "https://camaya.net/download/gloox-${version}.tar.bz2";
@@ -30,7 +31,7 @@ stdenv.mkDerivation rec {
     description = "A portable high-level Jabber/XMPP library for C++";
     homepage = http://camaya.net/gloox;
     license = licenses.gpl3;
-    maintainers = with maintainers; [ fuuzetsu ];
+    maintainers = with maintainers; [ ];
     platforms = platforms.unix;
   };
 }

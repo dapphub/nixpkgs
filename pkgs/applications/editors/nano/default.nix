@@ -19,12 +19,12 @@ let
   };
 
 in stdenv.mkDerivation rec {
-  name = "nano-${version}";
-  version = "4.3";
+  pname = "nano";
+  version = "4.6";
 
   src = fetchurl {
-    url = "mirror://gnu/nano/${name}.tar.xz";
-    sha256 = "108dzj6azqmini9bvgl26r0q1y59s3nnrw75hfzv91bs50davlq0";
+    url = "mirror://gnu/nano/${pname}-${version}.tar.xz";
+    sha256 = "1s98jsvkfar6qmd5n5l1n1k59623dnc93ciyvlhxjkvpad0kmb4v";
   };
 
   nativeBuildInputs = [ texinfo ] ++ optional enableNls gettext;
@@ -36,6 +36,15 @@ in stdenv.mkDerivation rec {
     "--sysconfdir=/etc"
     (stdenv.lib.enableFeature enableNls "nls")
     (stdenv.lib.enableFeature enableTiny "tiny")
+  ];
+
+    patches = [
+      (fetchurl {
+        # fix compilation on macOS, where 'st_mtim' is unknown
+        # upstream patch not in 4.6
+        url = "https://git.savannah.gnu.org/cgit/nano.git/patch/?id=f516cddce749c3bf938271ef3182b9169ac8cbcc";
+        sha256 = "0gqymvr5vxxypr7y3sm252rsi4gjqp597l01x0lkxyvxsn45a4sx";
+      })
   ];
 
   postInstall = ''

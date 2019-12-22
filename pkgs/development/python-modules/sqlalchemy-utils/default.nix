@@ -5,12 +5,12 @@
 
 buildPythonPackage rec {
   pname = "sqlalchemy-utils";
-  version = "0.34.0";
+  version = "0.35.0";
 
   src = fetchPypi {
     inherit version;
     pname = "SQLAlchemy-Utils";
-    sha256 = "0rlixs084isgxsvvpz96njqzikvg8x021sgjp4yj71jpd8blvg8f";
+    sha256 = "0phsdcnm21qvxd00zmjd6yxbm1s0i7b1q8zrgfy8cqv9xpmz1w01";
   };
 
   propagatedBuildInputs = [

@@ -5,7 +5,7 @@
 , shared ? true
 , static ? true
 # If true, a separate .static ouput is created and the .a is moved there.
-# In this case `pkg-config` will auto detection will currently not work if the
+# In this case `pkg-config` auto detection does not currently work if the
 # .static output is given as `buildInputs` to another package (#66461), because
 # the `.pc` file lists only the main output's lib dir.
 # If false, and if `{ static = true; }`, the .a stays in the main output.
@@ -95,6 +95,9 @@ stdenv.mkDerivation (rec {
     "INCLUDE_PATH=$(dev)/include"
     "LIBRARY_PATH=$(out)/lib"
   ];
+
+  enableParallelBuilding = true;
+  doCheck = true;
 
   makeFlags = [
     "PREFIX=${stdenv.cc.targetPrefix}"

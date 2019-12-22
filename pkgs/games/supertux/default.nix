@@ -1,10 +1,10 @@
 { stdenv, fetchurl, cmake, pkgconfig, SDL2, SDL2_image , curl
-, libogg, libvorbis, libGLU_combined, openal, boost, glew
+, libogg, libvorbis, libGLU, libGL, openal, boost, glew
 , libpng, freetype
 }:
 
 stdenv.mkDerivation rec {
-  name = "supertux-${version}";
+  pname = "supertux";
   version = "0.6.0";
 
   src = fetchurl {
@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig cmake ];
 
-  buildInputs = [ SDL2 SDL2_image curl libogg libvorbis libGLU_combined openal boost glew
+  buildInputs = [ SDL2 SDL2_image curl libogg libvorbis libGLU libGL openal boost glew
     libpng freetype
   ];
 

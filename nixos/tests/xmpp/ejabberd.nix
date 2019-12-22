@@ -1,4 +1,4 @@
-import ../make-test.nix ({ pkgs, ... }: {
+import ../make-test-python.nix ({ pkgs, ... }: {
   name = "ejabberd";
   meta = with pkgs.stdenv.lib.maintainers; {
     maintainers = [ ajs124 ];
@@ -45,8 +45,7 @@ import ../make-test.nix ({ pkgs, ... }: {
               ip: "127.0.0.1"
               module: ejabberd_service
               access: local
-              shaper_rule: fast
-              ip: "127.0.0.1"
+              shaper: fast
 
           ## Disabling digest-md5 SASL authentication. digest-md5 requires plain-text
           ## password storage (see auth_password_format option).
@@ -181,7 +180,6 @@ import ../make-test.nix ({ pkgs, ... }: {
             mod_client_state: {}
             mod_configure: {} # requires mod_adhoc
             ## mod_delegation: {} # for xep0356
-            mod_echo: {}
             #mod_irc:
             #  host: "irc.@HOST@"
             #  default_encoding: "utf-8"
@@ -250,13 +248,21 @@ import ../make-test.nix ({ pkgs, ... }: {
   };
 
   testScript = { nodes, ... }: ''
-    $server->waitForUnit('ejabberd.service');
-    $server->succeed('su ejabberd -s $(which ejabberdctl) status|grep started') =~ /ejabberd is running/;
-    $server->succeed('su ejabberd -s $(which ejabberdctl) register azurediamond example.com hunter2');
-    $server->succeed('su ejabberd -s $(which ejabberdctl) register cthon98 example.com nothunter2');
-    $server->fail('su ejabberd -s $(which ejabberdctl) register asdf wrong.domain');
-    $client->succeed('send-message');
-    $server->succeed('su ejabberd -s $(which ejabberdctl) unregister cthon98 example.com');
-    $server->succeed('su ejabberd -s $(which ejabberdctl) unregister azurediamond example.com');
+    ejabberd_prefix = "su ejabberd -s $(which ejabberdctl) "
+
+    server.wait_for_unit("ejabberd.service")
+
+    assert "status: started" in server.succeed(ejabberd_prefix + "status")
+
+    server.succeed(
+        ejabberd_prefix + "register azurediamond example.com hunter2",
+        ejabberd_prefix + "register cthon98 example.com nothunter2",
+    )
+    server.fail(ejabberd_prefix + "register asdf wrong.domain")
+    client.succeed("send-message")
+    server.succeed(
+        ejabberd_prefix + "unregister cthon98 example.com",
+        ejabberd_prefix + "unregister azurediamond example.com",
+    )
   '';
 })

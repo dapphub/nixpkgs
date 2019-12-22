@@ -17,11 +17,11 @@ let
   vivaldiName = if isSnapshot then "vivaldi-snapshot" else "vivaldi";
 in stdenv.mkDerivation rec {
   pname = "vivaldi";
-  version = "2.6.1566.51-1";
+  version = "2.10.1745.21-1";
 
   src = fetchurl {
     url = "https://downloads.vivaldi.com/${branch}/vivaldi-${branch}_${version}_amd64.deb";
-    sha256 = "0582f16saldgn482806f9igb97is4p3ayvh99j0wx9plxnyq5xmm";
+    sha256 = "0ldl98h3sx2lc90nk8ksdp1ai0sjixn0v6hdx5nb9c6slf56wify";
   };
 
   unpackPhase = ''
@@ -82,8 +82,7 @@ in stdenv.mkDerivation rec {
       --suffix XDG_DATA_DIRS : ${gtk3}/share/gsettings-schemas/${gtk3.name}/ \
       ${stdenv.lib.optionalString enableWidevine "--suffix LD_LIBRARY_PATH : ${libPath}"}
   '' + stdenv.lib.optionalString enableWidevine ''
-    rm $out/opt/${vivaldiName}/libwidevinecdm.so
-    ln -s ${vivaldi-widevine}/lib/libwidevinecdm.so $out/opt/${vivaldiName}/libwidevinecdm.so
+    ln -sf ${vivaldi-widevine}/lib/libwidevinecdm.so $out/opt/${vivaldiName}/libwidevinecdm.so
   '';
 
   meta = with stdenv.lib; {

@@ -335,6 +335,9 @@ if (@swaps) {
         next unless -e $swapFilename;
         my $dev = findStableDevPath $swapFilename;
         if ($swapType =~ "partition") {
+            # zram devices are more likely created by configuration.nix, so
+            # ignore them here
+            next if ($swapFilename =~ /^\/dev\/zram/);
             push @swapDevices, "{ device = \"$dev\"; }";
         } elsif ($swapType =~ "file") {
             # swap *files* are more likely specified in configuration.nix, so
@@ -563,6 +566,24 @@ $fsAndSwap
 ${\join "", (map { "  $_\n" } (uniq @attrs))}}
 EOF
 
+sub generateNetworkingDhcpConfig {
+    my $config = <<EOF;
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  networking.useDHCP = false;
+EOF
+
+    foreach my $path (glob "/sys/class/net/*") {
+        my $dev = basename($path);
+        if ($dev ne "lo") {
+            $config .= "  networking.interfaces.$dev.useDHCP = true;\n";
+        }
+    }
+
+    return $config;
+}
+
 
 if ($showHardwareConfig) {
     print STDOUT $hwConfig;
@@ -605,6 +626,8 @@ EOF
   # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 EOF
         }
+
+        my $networkingDhcpConfig = generateNetworkingDhcpConfig();
 
         write_file($fn, <<EOF);
 @configuration@
