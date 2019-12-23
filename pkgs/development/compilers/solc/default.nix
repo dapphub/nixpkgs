@@ -7,10 +7,10 @@ assert z3Support -> z3 != null && stdenv.lib.versionAtLeast z3.version "4.6.0";
 assert cvc4Support -> cvc4 != null && cln != null && gmp != null;
 
 let
-  jsoncppURL = https://github.com/open-source-parsers/jsoncpp/archive/1.8.4.tar.gz;
+  jsoncppURL = https://github.com/open-source-parsers/jsoncpp/archive/1.9.2.tar.gz;
   jsoncpp = fetchzip {
     url = jsoncppURL;
-    sha256 = "1z0gj7a6jypkijmpknis04qybs1hkd04d1arr3gy89lnxmp6qzlm";
+    sha256 = "037d1b1qdmn3rksmn1j71j26bv4hkjv7sn7da261k853xb5899sg";
   };
   buildSharedLibs = stdenv.hostPlatform.isLinux;
 in
