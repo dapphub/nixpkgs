@@ -28,6 +28,7 @@ let
 
   swayPackage = pkgs.sway.override {
     extraSessionCommands = cfg.extraSessionCommands;
+    extraOptions = cfg.extraOptions;
     withBaseWrapper = cfg.wrapperFeatures.base;
     withGtkWrapper = cfg.wrapperFeatures.gtk;
   };
@@ -67,11 +68,27 @@ in {
       '';
     };
 
+    extraOptions = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      example = [
+        "--verbose"
+        "--debug"
+        "--unsupported-gpu"
+        "--my-next-gpu-wont-be-nvidia"
+      ];
+      description = ''
+        Command line arguments passed to launch Sway. Please DO NOT report
+        issues if you use an unsupported GPU (proprietary drivers).
+      '';
+    };
+
     extraPackages = mkOption {
       type = with types; listOf package;
       default = with pkgs; [
         swaylock swayidle
-        xwayland rxvt_unicode dmenu
+        xwayland alacritty dmenu
+        rxvt_unicode # For backward compatibility (old default terminal)
       ];
       defaultText = literalExample ''
         with pkgs; [ swaylock swayidle xwayland rxvt_unicode dmenu ];
