@@ -5,11 +5,13 @@
 
 stdenv.mkDerivation rec {
   pname = "cvc4";
-  version = "1.6";
+  version = "1.8-prerelease";
 
-  src = fetchurl {
-    url = "https://cvc4.cs.stanford.edu/downloads/builds/src/cvc4-${version}.tar.gz";
-    sha256 = "1iw793zsi48q91lxpf8xl8lnvv0jsj4whdad79rakywkm1gbs62w";
+  src = pkgs.fetchFromGitHub {
+    owner  = "cvc4";
+    repo   = "cvc4";
+    rev    = "fd60da4a22f02f6f5b82cef3585240c1b33595e9";
+    sha256 = "1bh0dvqskny3m95awlk237cdv0wds3qw1n89i3am1fqq0gs4ivyj";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
