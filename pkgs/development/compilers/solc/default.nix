@@ -1,9 +1,9 @@
 { stdenv, fetchzip, fetchgit, boost, cmake, z3 }:
 
 let
-  version = "0.4.17";
-  rev = "bdeb9e52a2211510644fb53df93fb98258b40a65";
-  sha256 = "1x6q2rlq6gxggidgsy6li7m4phwr1hcfi65pq9yimz64ddqfiira";
+  version = "0.4.18";
+  rev = "9cf6e910bd2b90d0c9415d9c257f85fe0c518de8";
+  sha256 = "0ij7qbn3ci6v4jf4gqcdphwy8lnc1l4ycw9pvq6c80kd1fayf2s6";
   jsoncppURL = https://github.com/open-source-parsers/jsoncpp/archive/1.7.7.tar.gz;
   jsoncpp = fetchzip {
     url = jsoncppURL;
